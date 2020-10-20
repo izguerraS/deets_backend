@@ -1,7 +1,6 @@
 class Api::RecipesController < ApplicationController
 
   def index    
-    
     p current_user
 
     @recipes = Recipe.order(:id => :desc)
@@ -29,6 +28,8 @@ class Api::RecipesController < ApplicationController
   end
 
   def update
+    @recipe = Recipe.find_by(id: params[:id])
+
     @recipe.title = params[:title]
     @recipe.chef = params[:chef]
     @recipe.ingredients = params[:ingredients]
@@ -37,5 +38,11 @@ class Api::RecipesController < ApplicationController
     @recipe.image_url = params[:image_url]
     @recipe.save
     render 'show.json.jb'
+  end
+
+  def destroy
+    @recipe = Recipe.find_by(id: params[:id])
+    @recipe.destroy
+    render json: {message: "You have successfully deleted the recipe"}
   end
 end
