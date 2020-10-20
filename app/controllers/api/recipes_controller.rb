@@ -1,9 +1,12 @@
 class Api::RecipesController < ApplicationController
 
   def index    
-    p current_user
-
-    @recipes = Recipe.order(:id => :desc)
+    if current_user
+      @recipes = Recipe.order(:id => :desc)
+    else
+      @recipes = []
+    end
+     
     render 'index.json.jb'
 
   end
@@ -30,12 +33,12 @@ class Api::RecipesController < ApplicationController
   def update
     @recipe = Recipe.find_by(id: params[:id])
 
-    @recipe.title = params[:title]
-    @recipe.chef = params[:chef]
-    @recipe.ingredients = params[:ingredients]
-    @recipe.directions = params[:directions]
-    @recipe.prep_time = params[:prep_time]
-    @recipe.image_url = params[:image_url]
+    @recipe.title = params[:title] || @recipe.title 
+    @recipe.chef = params[:chef] || @recipe.chef    
+    @recipe.ingredients = params[:ingredients] || @recipe.ingredients
+    @recipe.directions = params[:directions] || @recipe.directions
+    @recipe.prep_time = params[:prep_time] || @recipe.prep_time
+    @recipe.image_url = params[:image_url] || @recipe.image_url
     @recipe.save
     render 'show.json.jb'
   end
