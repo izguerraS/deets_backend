@@ -6,7 +6,7 @@ class Api::RecipesController < ApplicationController
     else
       @recipes = []
     end
-     
+
     render 'index.json.jb'
 
   end
@@ -17,6 +17,9 @@ class Api::RecipesController < ApplicationController
   end
 
   def create
+    p '*' * 88
+    p current_user
+    
     @recipe = Recipe.new(
       chef: params[:chef] ,
       title: params[:title],
@@ -26,6 +29,8 @@ class Api::RecipesController < ApplicationController
       image_url: params[:image_url],
       user_id: current_user.id 
     )
+
+
     @recipe.save
     render 'show.json.jb'
   end
@@ -39,7 +44,8 @@ class Api::RecipesController < ApplicationController
     @recipe.directions = params[:directions] || @recipe.directions
     @recipe.prep_time = params[:prep_time] || @recipe.prep_time
     @recipe.image_url = params[:image_url] || @recipe.image_url
-    @recipe.save
+    @recipe.user_id = @recipe.user_id || 1
+    @recipe.save!
     render 'show.json.jb'
   end
 
