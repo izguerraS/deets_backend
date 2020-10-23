@@ -1,11 +1,12 @@
 class Api::RecipesController < ApplicationController
 
-  def index    
-    if current_user
-      @recipes = Recipe.order(:id => :desc)
-    else
-      @recipes = []
-    end
+  def index
+    @recipes = Recipe.all    
+    # if current_user
+    #   @recipes = Recipe.order(:id => :desc)
+    # else
+    #   @recipes = []
+    # end
 
     render 'index.json.jb'
 
@@ -27,7 +28,7 @@ class Api::RecipesController < ApplicationController
       prep_time: params[:prep_time],
       directions: params[:directions],
       image_url: params[:image_url],
-      user_id: current_user.id 
+      # user_id: current_user.id 
     )
 
 
